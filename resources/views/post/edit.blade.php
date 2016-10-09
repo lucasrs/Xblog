@@ -4,8 +4,8 @@
     <link href="//cdn.bootcss.com/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
 @endsection
 @section('content')
+    <div id="upload-img-url" data-upload-img-url="{{ route('upload.image') }}" style="display: none"></div>
     <div class="row">
-        <div id="upload-img-url" data-upload-img-url="{{ route('upload.image') }}"></div>
         <div class="col-md-12">
             <div id="data" class="widget widget-default" data-id="{{ $post->id }}">
                 <div class="widget-header">
@@ -48,7 +48,7 @@
                 uploadUrl: $("#upload-img-url").data('upload-img-url'),
                 uploadFieldName: 'image',
                 extraParams: {
-                    '_token': Laravel.csrfToken,
+                    '_token': XblogConfig.csrfToken,
                     'type': 'xrt'
                 },
             });

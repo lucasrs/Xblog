@@ -23,8 +23,9 @@
     @endif
     @yield('css')
     <script>
-        window.Laravel = <?php echo json_encode([
+        window.XblogConfig = <?php echo json_encode([
                 'csrfToken' => csrf_token(),
+                'github_username' => isset($github_username) ? $github_username :  '',
         ]); ?>
     </script>
     @include('widget.google_analytics')

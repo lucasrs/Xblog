@@ -20,7 +20,7 @@ class PageController extends Controller
     public function __construct(PageRepository $pageRepository)
     {
         $this->pageRepository = $pageRepository;
-        $this->middleware(['auth', 'admin'], ['except' => 'about']);
+        $this->middleware(['auth', 'admin'], ['except' => 'show']);
     }
 
 
@@ -68,14 +68,16 @@ class PageController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function about()
+    public function show($name)
     {
-        $page = $this->pageRepository->get('about');
+        $page = $this->pageRepository->get($name);
+        if ($page->configuration && $page->configuration->config['display'] == 'false') {
+            if (isAdmin(auth()->user())) {
+                return view('page.show', compact('page'));
+            } else {
+                abort(404);
+            }
+        }
         $this->pageShowing($page);
         return view('page.show', compact('page'));
     }

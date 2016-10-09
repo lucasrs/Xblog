@@ -26,8 +26,13 @@
             <div class="collapse navbar-collapse fix-top" id="blog-navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a class="menu-item" href="{{ route('achieve') }}">归档</a></li>
-                    <li><a class="menu-item" href="{{ route('projects') }}">项目</a></li>
-                    <li><a class="menu-item" href="{{ route('page.about') }}">关于</a></li>
+                    @if(XblogConfig::getValue('github_username'))
+                        <li><a class="menu-item" href="{{ route('projects') }}">项目</a></li>
+                    @endif
+                    @foreach($pages as $page)
+                        <li><a class="menu-item"
+                               href="{{ route('page.show',$page->name) }}">{{ $page->display_name }}</a></li>
+                    @endforeach
                 </ul>
                 <ul class="nav navbar-nav navbar-right blog-navbar">
                     @if(Auth::check())
@@ -65,9 +70,11 @@
                         <li><a href="{{ url('register') }}">注册</a></li>
                     @endif
                 </ul>
-                <form class="navbar-form navbar-right" role="search" method="get" action="{{ route('search') }}">
-                    <input type="text" class="form-control" name="q" placeholder="搜索" required>
-                </form>
+                @if(config('scout.algolia.id'))
+                    <form class="navbar-form navbar-right" role="search" method="get" action="{{ route('search') }}">
+                        <input type="text" class="form-control" name="q" placeholder="搜索" required>
+                    </form>
+                @endif
             </div>
         </nav>
     </div>

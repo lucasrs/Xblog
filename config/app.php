@@ -187,6 +187,7 @@ return [
         Laravel\Scout\ScoutServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
+        App\Providers\CacheServiceProvider::class,
         //Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
@@ -234,6 +235,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'XblogConfig' => App\Facades\XblogConfig::class,
     ],
 
 ];

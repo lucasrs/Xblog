@@ -58,6 +58,19 @@ class MapRepository extends Repository
         return $count;
     }
 
+    public function saveSettings(array $inputs)
+    {
+        foreach ($inputs as $key => $value) {
+            $map = Map::firstOrNew([
+                'key' => $key,
+            ]);
+            $map->tag = 'settings';
+            $map->value = $value;
+            $map->save();
+        }
+        $this->clearCache();
+    }
+
     public function getArrayByTag($tag)
     {
         $maps = $this->getByTag($tag);
@@ -74,6 +87,14 @@ class MapRepository extends Repository
             return Map::where('key', $key)->first();
         });
         return $map;
+    }
+
+    public function getValue($key, $default = null)
+    {
+        $map = $this->get($key);
+        if ($map)
+            return $map->value;
+        return $default;
     }
 
     public function delete($key)

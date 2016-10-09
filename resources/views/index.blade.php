@@ -14,24 +14,22 @@
         <p class="links">
             <font aria-hidden="true">»</font>
             <a href="{{ route('post.index') }}" aria-label="点击查看博客文章列表">博客</a><font aria-hidden="true">/</font>
-            <a href="{{ route('projects') }}" aria-label="点击查看项目列表">项目</a><font aria-hidden="true">/</font>
-            <a href="{{ route('page.about') }}" aria-label="查看{{ $author or 'author' }}的关于">关于</a>
+            <a href="{{ route('projects') }}" aria-label="点击查看项目列表">项目</a>
+            @foreach($pages as $page)
+                <font aria-hidden="true">/</font><a href="{{ route('page.show',$page->name) }}"
+                                                    aria-label="查看{{ $author or 'author' }}的{{ $page->display_name }}">{{$page->display_name }}</a>
+
+            @endforeach
+
         </p>
         <p class="links">
             <font aria-hidden="true">»</font>
-            <a href="{{ config('social.github') }}" target="_blank" aria-label="{{ $author or 'author' }} 的 Github 地址">
-                <i class="fa fa-github fa-fw" title="Github"></i>
-            </a>
-            <a href="{{ config('social.facebook') }}" target="_blank"
-               aria-label="{{ $author or 'author' }} 的 Github 地址">
-                <i class="fa fa-facebook fa-fw" title="facebook"></i>
-            </a>
-            <a href="{{ config('social.twitter') }}" target="_blank" aria-label="{{ $author or 'author' }} 的 Github 地址">
-                <i class="fa fa-twitter fa-fw" title="twitter"></i>
-            </a>
-            <a href="{{ config('social.weibo') }}" target="_blank" aria-label="{{ $author or 'author' }} 的 Github 地址">
-                <i class="fa fa-weibo fa-fw" title="weibo"></i>
-            </a>
+            @foreach(config('social') as $key => $value)
+                <a href="{{ $value['url'] }}" target="_blank"
+                   aria-label="{{ $author or 'author' }} 的 {{ ucfirst($key) }} 地址">
+                    <i class="{{ $value['fa'] }}" title="{{ ucfirst($key) }}"></i>
+                </a>
+            @endforeach
         </p>
     </div>
 @endsection

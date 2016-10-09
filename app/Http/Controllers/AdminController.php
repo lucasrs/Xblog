@@ -24,8 +24,8 @@ class AdminController extends Controller
     protected $tagRepository;
     protected $categoryRepository;
     protected $pageRepository;
-    protected $mapRepository;
     protected $imageRepository;
+    protected $mapRepository;
 
     /**
      * AdminController constructor.
@@ -35,8 +35,8 @@ class AdminController extends Controller
      * @param CategoryRepository $categoryRepository
      * @param TagRepository $tagRepository
      * @param PageRepository $pageRepository
-     * @param MapRepository $mapRepository
      * @param ImageRepository $imageRepository
+     * @param MapRepository $mapRepository
      * @internal param MapRepository $mapRepository
      */
     public function __construct(PostRepository $postRepository,
@@ -45,8 +45,8 @@ class AdminController extends Controller
                                 CategoryRepository $categoryRepository,
                                 TagRepository $tagRepository,
                                 PageRepository $pageRepository,
-                                MapRepository $mapRepository,
-                                ImageRepository $imageRepository)
+                                ImageRepository $imageRepository,
+                                MapRepository $mapRepository)
     {
         $this->postRepository = $postRepository;
         $this->commentRepository = $commentRepository;
@@ -54,8 +54,8 @@ class AdminController extends Controller
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository = $tagRepository;
         $this->pageRepository = $pageRepository;
-        $this->mapRepository = $mapRepository;
         $this->imageRepository = $imageRepository;
+        $this->mapRepository = $mapRepository;
         $this->middleware(['auth', 'admin']);
     }
 
@@ -75,22 +75,13 @@ class AdminController extends Controller
 
     public function settings()
     {
-        $settings = $this->mapRepository->getArrayByTag('settings');
-        return view('admin.settings', $settings);
+        return view('admin.settings');
     }
 
     public function saveSettings(Request $request)
     {
         $inputs = $request->except('_token');
-        foreach ($inputs as $key => $value) {
-            $map = Map::firstOrNew([
-                'key' => $key,
-            ]);
-            $map->tag = 'settings';
-            $map->value = $value;
-            $map->save();
-        }
-        $this->mapRepository->clearCache();
+        $this->mapRepository->saveSettings($inputs);
         return back()->with('success', '保存成功');
     }
 

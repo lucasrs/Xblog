@@ -9,18 +9,28 @@
 namespace App\Observers;
 
 
+use App\Contracts\XblogCache;
 use App\Http\Controllers\SiteMapController;
 use App\Post;
 
 class PostObserver
 {
-    public function created(Post $post)
+    protected $xblogCache;
+
+    public function saved(Post $post)
     {
-        cache()->tags(SiteMapController::tag)->flush();
+        $this->getXblogCache()->clearCache();
     }
 
-    public function updated(Post $post)
+    /**
+     * @return XblogCache
+     */
+    private function getXblogCache()
     {
-        cache()->tags(SiteMapController::tag)->flush();
+        if ($this->xblogCache == null) {
+            $this->xblogCache = app('XblogCache');
+            $this->xblogCache->setTag(SiteMapController::tag);
+        }
+        return $this->xblogCache;
     }
 }

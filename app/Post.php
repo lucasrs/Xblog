@@ -9,6 +9,9 @@ use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
+    /**
+     * Attention please!! If you don't config ALGOLIA_APP_ID, annotate Searchable:
+     */
     use SoftDeletes, Searchable;
 
     /**
@@ -79,6 +82,11 @@ class Post extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function configuration()
+    {
+        return $this->morphOne(Configuration::class, 'configurable');
     }
 
     public function isPublished()
